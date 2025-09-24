@@ -13,7 +13,7 @@ namespace Start
     {
         private readonly ILogger<Function1> _logger;
         private readonly JsonSerializerOptions _jsonOptions;
-        private readonly string _geminiApiKey;
+        
 
         public Function1(ILogger<Function1> logger)
         {
@@ -23,7 +23,7 @@ namespace Start
                 Converters = { new JsonStringEnumConverter() },
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
-            _geminiApiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY") ?? throw new Exception("GEMINI_API_KEY is require to run this project.");
+            
         }
 
         private string SerializeToJson(object obj)
@@ -320,10 +320,12 @@ namespace Start
     {
         private readonly GoogleAI _google;
         private readonly GenerativeModel _model;
+        private readonly string _geminiApiKey;
 
         public Gemini()
         {
-            _google = new GoogleAI("AIzaSyCzZZmrermAXwpzx9RS7-S_OjG98cYCON4");
+            _google = new GoogleAI(_geminiApiKey);
+            _geminiApiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY") ?? string.Empty;
             _model = _google.GenerativeModel(model: Model.Gemini25Flash);
         }
 
